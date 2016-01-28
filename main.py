@@ -116,10 +116,10 @@ def dial_to(vault_state, code):
     :return: The letter to turn the dial to
     :rtype: str
     """
-    start_index = int(vault_state['serial number'][
-                  len(vault_state['serial number'])-4])
-    end_index = int(vault_state['serial number'][
-                  len(vault_state['serial number'])-2])
+    start_index = int(vault_state['serial number']
+                      [len(vault_state['serial number'])-4])
+    end_index = int(vault_state['serial number']
+                    [len(vault_state['serial number'])-2])
     code_substring = code[start_index:end_index]
     return sorted(code_substring)[0]
 
@@ -131,7 +131,8 @@ def code_layer(vault_state):
 
     :return: None
     """
-    code = input('What is the displayed code?')
+    print('What is the displayed code?')
+    code = input('>> ')
     print('Turn the dial to', dial_to(vault_state, code))
     print('Code layer complete.')
 
