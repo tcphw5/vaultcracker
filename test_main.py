@@ -1,6 +1,6 @@
 # Import pytest so that we can use xfail
-#import pytest
-#No longer needed after all tests are implmented
+# q import pytest
+# No longer needed after all tests are implmented
 
 # Import all of our testable functions from main.
 from main import press_button, which_to_press, dial_to, should_flip
@@ -11,13 +11,13 @@ def test_press_button():
 
     Tests press_button function.
     """
-    #should return false since 13 is div by 13 and button need not be pressed
+    # should return false since 13 is div by 13 and button need not be pressed
     falseDisplay = 13
-    #should return true since 14 is not div by 13
+    # should return true since 14 is not div by 13
     trueDisplay = 14
 
-    assert False == press_button(falseDisplay)
-    assert True == press_button(trueDisplay)
+    assert press_button(falseDisplay) is False
+    assert press_button(trueDisplay) is True
 
 
 def test_which_to_press():
@@ -48,7 +48,7 @@ def test_dial_to():
         'switch count': 6
     }
 
-    #according to sample on website answer should be 'a'
+    # according to sample on website answer should be 'a'
     code = 'elephant'
     assert 'a' == dial_to(vault_state, code)
 
@@ -68,37 +68,37 @@ def test_should_flip():
         'switch count': 6
     }
 
-    #first 3 tests are taken from example
-    #other 3 tests test the untested labels (MR, B, K)
+    # first 3 tests are taken from example
+    # other 3 tests test the untested labels (MR, B, K)
     has_red = 0
     has_blue = 1
     has_green = 1
-    assert True == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is True
 
     has_red = 0
     has_blue = 1
     has_green = 0
-    assert True == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is True
 
     has_red = 0
     has_blue = 0
     has_green = 0
-    assert False == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is False
 
-    #False because there is no B in serial number
+    # False because there is no B in serial number
     has_red = 1
     has_blue = 0
     has_green = 1
-    assert False == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is False
 
-    #False because Maintenance Req light is off
+    # False because Maintenance Req light is off
     has_red = 0
     has_blue = 0
     has_green = 1
-    assert False == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is False
 
-    #True because there is a K in serial number
+    # True because there is a K in serial number
     has_red = 1
     has_blue = 1
     has_green = 0
-    assert True == should_flip(vault_state, has_red, has_blue, has_green)
+    assert should_flip(vault_state, has_red, has_blue, has_green) is True

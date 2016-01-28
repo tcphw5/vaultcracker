@@ -37,6 +37,7 @@ def press_button(display):
     :return: True if the button should be pressed
     :rtype: bool
     """
+    # Checks if display is div by 13
     if display % 13 != 0:
         print('Press the button!')
         return True
@@ -54,6 +55,7 @@ def button_layer(vault_state):
     print('What number is displayed?')
     display = read_int()
 
+    # Repeats and increase suspicion lvl until div by 13
     while press_button(display):
         vault_state['suspicion level'] += 1
         print('What number is displayed?')
@@ -75,6 +77,7 @@ def which_to_press(history, displayed):
     :return: The label of the button to press.
     :rtype: int
     """
+    # returns button to be pressed and stores results in tuple inside history
     if displayed == 4:
         history.append((4, 2))
         return 2
@@ -96,6 +99,8 @@ def history_layer(vault_state):
 
     :return: None
     """
+    # runs until 5 buttons have been pressed and
+    # reads input and updates suspicion lvl
     history = []
     while len(history) < 5:
         print('What number is displayed right now?')
@@ -116,6 +121,8 @@ def dial_to(vault_state, code):
     :return: The letter to turn the dial to
     :rtype: str
     """
+    # finds start and end index of substring based on
+    # serial number then sorts and returns first value
     start_index = int(vault_state['serial number']
                       [len(vault_state['serial number'])-4])
     end_index = int(vault_state['serial number']
@@ -151,6 +158,8 @@ def should_flip(vault_state, has_red, has_blue, has_green):
     :return: True if the user should flip (toggle) this switch, otherwise False
     :rtype: bool
     """
+    # checks all possible light combos and
+    # returns whether to flip or not
     if not has_blue and not has_red and not has_green:
         return False
 
@@ -198,6 +207,8 @@ def switches_layer(vault_state):
 
     :return: None
     """
+    # gets input once for each switch and updates
+    # suspicion lvl and outputs to flip or not
     for i in range(vault_state['switch count']):
         print('Does switch', i, 'have a red light?')
         has_red = read_int()
