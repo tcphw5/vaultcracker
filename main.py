@@ -120,7 +120,7 @@ def dial_to(vault_state, code):
                       [len(vault_state['serial number'])-4])
     end_index = int(vault_state['serial number']
                     [len(vault_state['serial number'])-2])
-    code_substring = code[start_index:end_index]
+    code_substring = code[start_index:end_index+1]
     return sorted(code_substring)[0]
 
 
