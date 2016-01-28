@@ -44,6 +44,7 @@ def press_button(display):
         print('Leave the button alone now.')
         return False
 
+
 def button_layer(vault_state):
     """
     :param vault_state: The current state of the vaule
@@ -59,6 +60,7 @@ def button_layer(vault_state):
         display = read_int()
 
     print('Button layer is complete.')
+
 
 def which_to_press(history, displayed):
     """Returns the integer value of the button to press in response to the
@@ -85,7 +87,6 @@ def which_to_press(history, displayed):
     elif displayed == 2:
         history.append((2, history[0][1]))
         return history[0][1]
-
 
 
 def history_layer(vault_state):
@@ -115,8 +116,13 @@ def dial_to(vault_state, code):
     :return: The letter to turn the dial to
     :rtype: str
     """
-    code_substring = code[int(vault_state['serial number'][len(vault_state['serial number'])-4]):int(vault_state['serial number'][len(vault_state['serial number'])-2])]
+    start_index = int(vault_state['serial number']
+                      [len(vault_state['serial number'])-4])
+    end_index = int(vault_state['serial number']
+                    [len(vault_state['serial number'])-2])
+    code_substring = code[start_index:end_index]
     return sorted(code_substring)[0]
+
 
 def code_layer(vault_state):
     """Interact with the user to override the Code Layer
@@ -125,10 +131,10 @@ def code_layer(vault_state):
 
     :return: None
     """
-    code = input('What is the displayed code?')
+    print('What is the displayed code?')
+    code = input('>> ')
     print('Turn the dial to', dial_to(vault_state, code))
     print('Code layer complete.')
-
 
 
 def should_flip(vault_state, has_red, has_blue, has_green):
@@ -184,6 +190,7 @@ def should_flip(vault_state, has_red, has_blue, has_green):
         else:
             return False
 
+
 def switches_layer(vault_state):
     """Interact with the user to override the Switches Layer
 
@@ -206,6 +213,7 @@ def switches_layer(vault_state):
             print('DO NOT flip that switch')
 
     print('Switches layer is complete.')
+
 
 def get_vault_state():
     """Interact with the user to create an initial vault state.
