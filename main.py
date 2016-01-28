@@ -37,18 +37,28 @@ def press_button(display):
     :return: True if the button should be pressed
     :rtype: bool
     """
-    pass
-
+    if display % 13 != 0:
+        print('Press the button!')
+        return True
+    else:
+        print('Leave the button alone now.')
+        return False
 
 def button_layer(vault_state):
-    """Interact with the user to override the Button Layer
-
-    :param vault_state: The current state of the vault
+    """
+    :param vault_state: The current state of the vaule
 
     :return: None
     """
-    pass
+    print('What number is displayed?')
+    display = read_int()
 
+    while press_button(display):
+        vault_state['suspicion level'] += 1
+        print('What number is displayed?')
+        display = read_int()
+
+    print('Button layer is complete.')
 
 def which_to_press(history, displayed):
     """Returns the integer value of the button to press in response to the
@@ -63,7 +73,19 @@ def which_to_press(history, displayed):
     :return: The label of the button to press.
     :rtype: int
     """
-    pass
+    if displayed == 4:
+        history.append((4, 2))
+        return 2
+    elif displayed == 1:
+        history.append((1, 4))
+        return 4
+    elif displayed == 3:
+        history.append((3, history[len(history)-1][0]))
+        return history[len(history)-2][0]
+    elif displayed == 2:
+        history.append((2, history[0][1]))
+        return history[0][1]
+
 
 
 def history_layer(vault_state):
@@ -73,7 +95,14 @@ def history_layer(vault_state):
 
     :return: None
     """
-    pass
+    history = []
+    while len(history) < 5:
+        print('What number is displayed right now?')
+        displayed = read_int()
+        print('Press the button labeled', which_to_press(history, displayed))
+        if history[len(history)-1][1] % 2 == 0:
+            vault_state['suspicion level'] += 1
+    print('History layer complete.')
 
 
 def dial_to(vault_state, code):
@@ -86,8 +115,8 @@ def dial_to(vault_state, code):
     :return: The letter to turn the dial to
     :rtype: str
     """
-    pass
-
+    code_substring = code[int(vault_state['serial number'][len(vault_state['serial number'])-4]):int(vault_state['serial number'][len(vault_state['serial number'])-2])]
+    return sorted(code_substring)[0]
 
 def code_layer(vault_state):
     """Interact with the user to override the Code Layer
@@ -96,7 +125,10 @@ def code_layer(vault_state):
 
     :return: None
     """
-    pass
+    code = input('What is the displayed code?')
+    print('Turn the dial to', dial_to(vault_state, code))
+    print('Code layer complete.')
+
 
 
 def should_flip(vault_state, has_red, has_blue, has_green):
@@ -113,8 +145,44 @@ def should_flip(vault_state, has_red, has_blue, has_green):
     :return: True if the user should flip (toggle) this switch, otherwise False
     :rtype: bool
     """
-    pass
+    if not has_blue and not has_red and not has_green:
+        return False
 
+    if has_blue and has_red and has_green:
+        return False
+
+    if not has_blue and has_red and not has_green:
+        return False
+
+    if not has_blue and not has_red and has_green:
+        if vault_state['indicators']['maintenance required']:
+            return True
+        else:
+            return False
+
+    if has_blue and not has_red and not has_green:
+        if vault_state['indicators']['check engine']:
+            return True
+        else:
+            return False
+
+    if has_blue and has_red and not has_green:
+        if 'K' in vault_state['serial number']:
+            return True
+        else:
+            return False
+
+    if has_blue and not has_red and has_green:
+        if 'R' in vault_state['serial number']:
+            return True
+        else:
+            return False
+
+    if not has_blue and has_red and has_green:
+        if 'B' in vault_state['serial number']:
+            return True
+        else:
+            return False
 
 def switches_layer(vault_state):
     """Interact with the user to override the Switches Layer
@@ -123,8 +191,21 @@ def switches_layer(vault_state):
 
     :return: None
     """
-    pass
+    for i in range(vault_state['switch count']):
+        print('Does switch', i, 'have a red light?')
+        has_red = read_int()
+        print('Does switch', i, 'have a blue light?')
+        has_blue = read_int()
+        print('Does switch', i, 'have a green light?')
+        has_green = read_int()
 
+        if should_flip(vault_state, has_red, has_blue, has_green):
+            vault_state['suspicion level'] += 2
+            print('Flip that switch')
+        else:
+            print('DO NOT flip that switch')
+
+    print('Switches layer is complete.')
 
 def get_vault_state():
     """Interact with the user to create an initial vault state.
